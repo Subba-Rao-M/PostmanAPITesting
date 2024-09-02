@@ -566,4 +566,11 @@ http://localhost:8080/
 Create Remote Repository https://github.com/Subba-Rao-M/PostmanAPITesting.git
 
 Create Local Repository:
-
+git init 
+git remote add origin https://github.com/Subba-Rao-M/PostmanAPITesting.git
+git status
+git add -A
+git commit -m "Upload files to local repo"
+git ls-files
+git push origin master
+In Jenkins update git path and windows shell script 
