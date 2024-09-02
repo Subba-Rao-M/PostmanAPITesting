@@ -1,0 +1,569 @@
+API Testing:
+
+Client -  Internet - Server
+
+Client sends request and server sends response with some data
+
+1 tier architecture - Same machine - Client and server in same system
+2 tier architecture -- > Client machines will access the databases in different machine
+3 tier arhitecture  --> Client layer - Business layer - database layer
+
+Presentation Layer, application layer and data layer
+
+
+
+Application Programming Intergface(API) - To communicate between two applications developed using same or different platforms and technologies
+
+Front End Application  -> API - backend application
+API contains business logics as middle layer playing role of mediator
+API gets request and sends response
+Web applications work based on API's
+
+Advantages:
+1. IF API testing done, less testing can be done in UI and saves time and also provides more time for remaining testing
+
+Example:
+
+Customer orders food -- waiter gets request and send to check in Kitchen - chef get request and send back to waiter, waiter sends response back to customer
+
+Customer  ----> MakeMyTrip ---> DIfferent flights, hotels, etc --> MakeMyTrip uses different APIS and serves customers based on their request
+
+whatsapp -- > SHaring location - internally calls google map with request and response
+
+Google account used to login to Linkedin, Facebook etc --- > Facebook or Linkedin internally Calls googles API to authenticate the user to see if the user is valid or not
+GitHub, Payment APi, UPI payment, etc
+
+Types of API's
+SImple Object Access Protocal(SOAP) -- Old legacy application and uses only XML
+Representational Tarnsfer Protocal(ReST) -- Uses JSOn, XML, html, text
+
+
+WEB Service and API
+Web servicce in API wrapped in http
+all web services are API and all API are  not webservice -> When API is hosted on network or web it is called web service so it is able to communicate
+web service needs network and apis dont
+When API moved to production it is called as web services, until it is in test environment it is called as API's
+
+Rest API methods or HTTPS requests -- > Get, Post(Create), Put(Update), Patch(Update specific data), Delete
+
+HTTP vs HTTPS --> HyperText Transfer Protocal -- > Protocals used by web services and in https data is encrypted while transferring data over network
+
+
+URI -- > Uniform Resource Identifier --> 
+URL --> Uniform Resource Locator
+URN --> Uniform Resource Name 
+
+<-------- URL/URI ------------------------->
+-------<------------URI-------------------->
+--------------------------------<--URN----->
+<SCHEMA><HOST---------><--PATH------------->
+https://www.google.com/articles/articlename
+
+
+Feature/Resource - Refers to some functionality
+
+PayLoad --> body in request or response 
+
+
+				URI/ Headers / Payload			HTTP Methods
+Client/Consumer <----------------------> Server  <----------------------> Database
+				Status Codes/ Response payload / String Messages
+
+
+
+After delete record you will get status code as 204 - no content
+
+WorkSpace - All tescases maintained and saved in workspace
+
+Create a New WorkSpace -- Project -- > Rename and delete and change settings possible
+
+Create a Collection -- > contains number of folders and https requests - Folder Structure for grouping test cases inside workspace
+Can create new collection, update it and delete it and run the collections to execute all test cases under it
+Export collection is saved as .json file and later it can be shared and imported 
+
+Request ------------------> API --------------------> Response
+
+Get -------> Retrieve the data from server
+POST ---> Create a resource in database
+PUT ---> Update the existing data in database i.e complete row update
+PATCH -- > Update the few columns data in database i.e partial update
+DELETE --> DELETE the existing data in database
+
+Every request we consider it as test case
+
+TC ID --> Request Type -- > URI --> Request Payload --> Response Payload --> Status Code
+Validations done on status code, response time, response payload, cookies and headers
+Based on satus code we will say test pass or fail
+Cookies are temporary internet files stored in client system/browser
+All payload data and verification should be based on document or acceptance criteria
+
+https://reqres.in/api/users?page=2
+<----Host/Domain><Path Parameter><Query Parameter>
+
+
+HTTP Status Codes
+
+Succes Codes: 
+200 OK
+201	Created
+202	Accepted
+203 Non-Authoritive information
+204	No content
+
+Access Errors:
+400	Bad Request
+401	Unauthorized
+403	Forbidden
+404	Not found
+409 Conflict
+
+Server Errors:
+500	Internal Server Error
+501	Not implemented
+502	Bad Gateway
+503	Service Unavailable
+504 Gateway timeout
+505	Network TimeOut
+
+install npm -g json-server
+
+C:\Automation_Projects\MyGitExample\jsonfiles>json-server Students.json -- TO open and keep running local host
+
+
+JSON - Java script object notation - it is a data format with low weight
+used for cummunicating data between client and server
+syntax for storing and exchanging data
+data should be able to encrypt and decrypt in leight weight format which is possible using json or xml
+json data types: number, String, boolean, null, object, array
+data is represented in key: value pair
+
+Examples:
+Number ---> { "ID" : 1 }
+String -- > { "name" : "John" }
+Boolean --> { "IsEnabled" : False }
+NULL ----->   "middlename" : null }
+Objects ---> { "Employees" : {"name":"Subba", "age":38, "Role": "Tester"}}
+Array --> { "Employees" : {"Subba", "Rahul", "Raj"} }
+there is no data type for key and there is data type for value
+
+Sequence of multiple data sets:
+
+{
+"Students":[
+{
+data1
+},
+{
+data 2
+}
+]
+}
+data1 - > is one object conatining key and value pairs
+Students --> is array of objects
+
+
+JSON Path: to extract particulr data from json file
+
+Examples: students[0].sName
+
+https://jsonpath.com/
+https://jsonpathfinder.com/
+
+
+RESPONSE VALIDATIONS:
+
+Status codes
+Headers
+Cookies
+Response time
+Response body
+
+Assertions -- > Validation points
+
+pm - Library provided by postman with pre-built functions using java script
+
+
+IN postman we have write java script functions to invoke the prebuilt methods in pm library
+Two ways using chai assertion library framewrok formt
+Normal function:
+
+pm.test("Test Name", function(){
+					//Assertions or test case steps
+				}
+		);
+Arrow function
+
+pm.test("Test Name", ()=>{
+					//Assertions or test case steps
+				}
+		);
+		
+IN postman Tests tab have to write validation parts.
+
+TESTING STATUS CODES:
+
+Test for the response status code
+pm.test("Status code is 200", ()=>{
+					pm.response.to.have.status(200);
+				}
+		);
+		
+Test for status codes as set of arrays like possibility to get:
+pm.test("Successful Post Request", ()=>{
+					pm.expect(pm.response.code).to.be.oneOf([201, 202]);
+				}
+		);
+
+Check the status code text:
+
+pm.test("Status code has string", ()=>{
+					pm.response.to.have.status("Created"); // Or OK
+				}
+		);
+
+mime type -  type of data in response data
+
+
+TESTING HEADERS:
+Presence of header and value of headers can be verified
+
+pm.test("Verify Content-Type Header is Present", ()=>
+{
+    pm.response.to.have.header("Content-Type");
+
+});
+
+pm.test("Verify the value of content-type header received in response",()=>{
+    pm.expect(pm.response.headers.get("Content-Type")).to.eq("application/json");
+
+});
+
+TESTING COOKIES:
+Cookie value is dynamic and changes based on requests hit:
+
+pm.test("Verify Cookie Type is Present", ()=>
+{
+    pm.expect(pm.cookies.has('language')).to.be.true;
+
+});
+
+pm.test("Verify the value of cookie-type received in response",()=>{
+    pm.expect(pm.cookies.get('language')).to.eq("en-gb");
+
+});
+
+
+Testing Response Time:
+
+pm.test("Verify for Response time less than 200ms", ()=>
+{
+    pm.expect(pm.response.responseTime).to.be.below(200);
+
+});
+
+
+Testing RESPONSE BODY:
+
+JSON path plays very important role as value keeps on changing:
+
+Asserting type of response data:
+
+ {
+        "id": 1,
+        "name": "John",
+        "location": "india",
+        "phone": "1234567890",
+        "courses": [
+            "Java",
+            "C#"
+        ]
+    },
+	
+
+const jsonData = pm.response.json(); ---------> Global variable and can be assessed in other functions
+pm.test("Verify the type of response data", ()=>{
+pm.expect(jsonData).to.be.an("Object");
+pm.expect(jsonData.id).to.be.a("number"); // number, object, string array or null can be a type
+pm.expect(jsonData.name).to.be.a("string");
+pm.expect(jsonData.location).to.be.a("string");
+pm.expect(jsonData.phone).to.be.a("number");
+pm.expect(jsonData.courses).to.be.an("array");
+
+
+});
+
+const jsonData = pm.response.json();
+pm.test("Verify the type of response data", ()=>{
+pm.expect(jsonData[0]).to.be.an("object");
+pm.expect(jsonData[0].id).to.be.a("number");
+pm.expect(jsonData[0].name).to.be.a("string");
+pm.expect(jsonData[0].courses).to.be.an("array");
+});
+
+
+
+Asserting array properties:
+
+
+pm.test("Test array properties to include one of value", ()=>{
+    pm.expect(jsonData[0].courses).to.include("Python");
+});
+
+pm.test("Test array properties to have list of value", ()=>{
+    pm.expect(jsonData[0].courses).to.have.members(["Python", "PHP"]);
+});
+
+
+Verification of JSON field values in response:
+
+pm.test("Verify the values of response data", ()=>{
+        pm.expect(jsonData[0].id).to.eql(1);
+        pm.expect(jsonData[0].name).to.eql("Test_User1");
+        pm.expect(jsonData[0].courses[1]).to.eql("Python");
+});
+
+Validating Json schema:
+Schema is structure or meta data which informs what kind of data can be stored in table columns.
+
+[
+    {
+        "id": 1,
+        "name": "Test_User1",
+        "location": "india",
+        "phone": "1235667991",
+        "courses": [
+            "PHP",
+            "Python"
+        ]
+    }
+]
+
+https://www.liquid-technologies.com/online-json-to-schema-converter
+
+Response form above url
+
+var schema = {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "items": [
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "courses": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "location",
+        "phone",
+        "courses"
+      ]
+    }
+  ]
+}
+
+pm.test("Schema is valid or not", ()=>{
+pm.expect(tv4.validate(jsonData, schema)).to.be.true;
+});
+
+
+
+Postman Scripts:
+
+Added as pre-request script and test scripts
+Pre-request executed before sending request and then request will be sent and then test scripts executed after getting response
+It can be available in collection level, folder level and request level and it will be executing in same order
+Pre request script helps to generate the data dynamically and depending on scenarios requirement it is defined in collection, folder or request level
+
+Postman Variables:
+Variable stores data and helps in re-usability
+Variables also can be collection, folder and request level
+Scope of Variables: Global, COllection, Environment Variable, local variable and data variable
+
+Global Variable - accessible in workspace everywhere in collection, folder and requests -- Created under global section
+
+Collection Level -- Click ... for collection and last section there is variable
+
+Environment Variable --> Variables based on Dev, QA, ACC etc where different values may be for same variables then can be used this or environment specific data is maintained here. Environmen variable is also like global variables but used by switching environments.
+To access particular environment we have to switch to particular environment
+Accessible in all collctions when particular environment used
+
+Local variable 
+Can be defined in pre-request script
+It will be created run time before sending request
+Example: pm.variables.set("local_url", "https://reqres.in");
+Used only for particular request where it was defined in pre-request script
+
+Data Variables
+Created in external files like excel and csv file
+used in data driven testing
+
+Creating local variable, collection variable, environment variable and global variable using pre-request script
+Also can be unset after use
+
+Local Variable - > pm.variables.set("local_url", "https://reqres.in");
+Global Variable -- > pm.globals.set("user_id_global", "2");
+Environment Variable --> pm.environment.set("local_url_dev", "https://reqres.in"); This is created under environment selected for execution
+Collection Variable -- > pm.collectionVariables.set("collection_url_dev", "https://reqres.in");
+
+Print above values to console
+console.log(pm.variables.get("local_url"))
+console.log(pm.globals.get("user_id_global"))
+console.log(pm.environment.get("local_url_dev"))
+console.log(pm.collectionVariables.get("collection_url_dev"))
+
+Local variable removed immediately after execution
+Other variables are created permanently and to delete it after completing all test case execution use unset option and write it in tests script not in pre-request script
+
+pm.globals.unset("user_id_global");
+pm.environment.unset("local_url_dev");
+pm.collectionVariables.unset("collection_url_dev");
+
+
+API Chaining:
+
+Response of one API is used in request of another API
+
+Req -- API 1 - Response -- > Request -- API 2 - Response
+
+var jsonData = JSON.parse(responseBody); -- Get the response body to variable
+pm.environment.set("id", jsonData.id); -- Set environemnt variable
+console.log(pm.environment.get("id")) --> Use id value as {{id}} in other requests
+
+
+Bearer Token is one type of authorization
+
+AUthorization can be added in request level and if it is common at collection level or folder level. In request authorization tab use inherit authorization form parent.
+
+var random = Math.random().toString(36).substring(2);
+var name = "jim"+random;
+var email = "jim"+random+"@gmail.com";
+pm.environment.set("user_name", name)
+pm.environment.set("user_email", email)
+
+{
+"name" : "{{user_name}}", ---To pass value in body {{parametervalue}} should be passed in double quotes
+"email" : "{{user_email}}"
+"location" : "india",
+"phone" : "1235667991",
+"courses" : [
+"PHP",
+"Python"
+]
+}
+
+var jsonData = JSON.parse(responseBody); -- Get the response body to variable
+pm.environment.set("id", jsonData.id); --> Id can be referred by {{id}} in other places
+
+var jsonData = pm.response.json();
+pm.expect(jsonData.id).to.eql(pm.environment.get("id");
+pm.expect(jsonData.email).to.eql(pm.environment.get("user_email");
+pm.expect(jsonData.name).to.eql(pm.environment.get("user_name");
+
+If above data needs to be updated once again use same script from above generated using random method in put test case.
+
+In delete request unset all environment variables.
+
+
+
+Data Driven Testing: Supports CSV and json formatted data
+
+Value should be replaced with "{{Excel_Column_Header}}" in request parameter. These are data variable created during run time and dont miss to place {{}} inside double quotes.
+
+File Upload Authentication:
+Postman - form-data under body for post request
+Key : enter value as file and select drop down value as file instead of text and select file and send request
+FOr multiple files use files keyword in key field
+
+Authorization:
+Authentication Types:
+No Auth - No authentication required
+Basic Authentication - User name and password
+Digest-Auth -- User name and password are encrypted while sending request to server
+Bearer Token -- > A unique token created to access the application functionalities
+API Key Authentication -- > api key and which can be also added as query parameter by providing valid api id value. Use open weather application for practice. Both key and value should be passed.
+Oath1.0 and 2.0 --> 3rd party integration. Token will be generated by consumer for using the API. Consumer will be providing client id to service provider and they will authorize it.
+Client passes client id to github. Github will send response for asking secret id and code along with other information based on valid client id. Client has to pass now secret id and then once again service provider will provide you token to use it.
+In Github while setting up apps you can generate client id and client secret
+
+
+cURL and Swagger:
+Swagger is interactive documentation. Some basic api testing can be done which interacts with server to explore API. It is not for API testing,it is just documentation. Validations cannot be tested in Swagger. Swagger response cannot be saved and cannot generate report.
+https://fakerestapi.azurewebsites.net/index.html
+
+cURL - > Client URL - consolidated string which conains all url and header information which can be used to create reqquest.
+
+IN postman use the import -- raw and paste cURL data - > Observe it created request details
+
+Documentation after Testing:
+
+Click on ... and use view documentation
+
+Publish to share with others. If you have these kind of documents directly can be opened in postman and run it.
+
+If response is in xml format we have to convert it to JSPOn format.
+
+To find jsonpath first convert xml to json using online tools available and then use it in jsonpathfinder.
+
+Postman has built in property xml2json to convert the response to json format.
+
+var jsonData = xml2Json(responseBody); // to convert xml to json response
+
+pm.test("Verify the name of animal received", ()=>{
+
+    pm.expect(jsonData.Pet.name).to.eq("Jimmy");
+});
+
+pm.collectionVariables.set("PetId", jsonData.Pet.id);
+
+pm.test("Check Pet id", ()=>{
+var jsonData = xml2Json(responseBody);
+pm.expect(jsonData.Pet.id).to.eq(pm.collectionVariables.get("PetId"));
+});
+
+Different ways of running collection:
+
+Install newman using node js npm --> npm install -g newman
+Install neman-reporter-html to generate report in html format --> npm install -g newman-reporter-html
+Export the collections.
+
+1. Locally using command prompt:
+
+Go to folder path where exported json collections stored and run command - > newman run PetStore.postman_collection.json
+To run with html report generation, no content visible in cmd and new html file created in path where json placed -- >newman run PetStore.postman_collection.json -r html
+
+Approach 2: Run the collection remotely using URL
+Run ... and click on share with ppls and they can run using above commands
+
+
+Approach 3: CI environment and using jenkins
+java -jar jenkins.war
+http://localhost:8080/
+
+
+Create Remote Repository https://github.com/Subba-Rao-M/PostmanAPITesting.git
+
+Create Local Repository:
+
