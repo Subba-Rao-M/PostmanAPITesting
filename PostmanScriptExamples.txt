@@ -1,0 +1,83 @@
+
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+
+var responseJSON = pm.response.json();
+
+// Test the response body structure and values
+pm.test("Response body structure is valid", function () {
+    pm.expect(responseJSON).to.be.an('object');
+    pm.expect(responseJSON).to.have.property('totalSavings');
+    pm.expect(responseJSON).to.have.property('totalAcquisitionValue');
+    pm.expect(responseJSON).to.have.property('totalGrowthInPercent');
+    pm.expect(responseJSON).to.have.property('canCreateAccount');
+    pm.expect(responseJSON).to.have.property('portfolios');
+});
+
+// Test totalSavings is a non-negative number
+pm.test("totalSavings is a non-negative number", function () {
+    pm.expect(responseJSON.totalSavings).to.be.a('number');
+    pm.expect(responseJSON.totalSavings).to.be.at.least(0);
+});
+
+// Test totalAcquisitionValue is a non-negative number
+pm.test("totalAcquisitionValue is a non-negative number", function () {
+    pm.expect(responseJSON.totalAcquisitionValue).to.be.a('number');
+    pm.expect(responseJSON.totalAcquisitionValue).to.be.at.least(0);
+});
+
+// Test totalGrowthInPercent is a number between -100 and 100
+pm.test("totalGrowthInPercent is a number between -100 and 100", function () {
+    pm.expect(responseJSON.totalGrowthInPercent).to.be.a('number');
+    pm.expect(responseJSON.totalGrowthInPercent).to.be.within(-100, 100);
+});
+
+var responseJSON = pm.response.json();
+
+// Test the response body structure and values
+pm.test("Response body structure is valid", function () {
+    pm.expect(responseJSON).to.be.an('object');
+    pm.expect(responseJSON).to.have.property('totalSavings');
+    pm.expect(responseJSON).to.have.property('totalAcquisitionValue');
+    pm.expect(responseJSON).to.have.property('totalGrowthInPercent');
+    pm.expect(responseJSON).to.have.property('canCreateAccount');
+    pm.expect(responseJSON).to.have.property('portfolios');
+
+    // checking that totalSavings is a non-negative number
+    pm.expect(responseJSON.totalSavings).to.be.a('number');
+    pm.expect(responseJSON.totalSavings).to.be.at.least(0);
+
+    // checking that totalAcquisitionValue is a non-negative number
+    pm.expect(responseJSON.totalAcquisitionValue).to.be.a('number');
+    pm.expect(responseJSON.totalAcquisitionValue).to.be.at.least(0);
+
+    // checking that totalGrowthInPercent is a number between -100 and 100
+    pm.expect(responseJSON.totalGrowthInPercent).to.be.a('number');
+    pm.expect(responseJSON.totalGrowthInPercent).to.be.within(-100, 100);
+});
+
+// checking that body canCreateAccount is equal to the string 'INVESTMENT_SAVINGS'.
+pm.test("canCreateAccount array contains INVESTMENT_SAVINGS", function () {
+    responseJSON.canCreateAccount.forEach(function (account) {
+        pm.expect(account).to.equal('INVESTMENT_SAVINGS');
+    });
+});
+
+
+*********************
+
+pm.test("totalAcquisitionValue is a non-negative number", function () {
+    const responseData = pm.response.json();
+
+    pm.expect(responseData.totalAcquisitionValue).to.be.a('number');
+    pm.expect(responseData.totalAcquisitionValue).to.be.at.least(0, "Value should be non-negative");
+});
+
+
+
+
+var encoded = encodeURIComponent(pm.cookies.get("DBSESSION"));
+postman.setEnvironmentVariable("testSessionId", encoded);
+console.log("DBSESSION: ", postman.getEnvironmentVariable("testSessionId"));
